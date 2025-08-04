@@ -66,3 +66,95 @@
 * [ ] Is TLS not enforced via redirection or HSTS headers?
 
 ---
+
+### ✅ **Cryptographic Failures Checklist (Offensive Security Focused)**
+
+#### 📍 **11–30. Advanced & Offensive-Oriented Checks**
+
+#### ⚠️ **11. Misuse of Public Key Infrastructure (PKI)**
+
+* [ ] Are expired or revoked certificates still accepted?
+* [ ] Is certificate pinning absent or improperly configured?
+* [ ] Is mutual TLS (mTLS) missing where appropriate (e.g., internal services)?
+
+#### 🛑 **12. No Certificate Transparency Monitoring**
+
+* [ ] Is the domain not monitored in CT logs, exposing it to unnoticed rogue certificates?
+
+#### 🔁 **13. Replay Attacks Not Prevented**
+
+* [ ] Are cryptographic tokens or requests replayable due to lack of nonce/timestamp?
+
+#### 🕵️ **14. No Cryptographic Logging or Audit Trail**
+
+* [ ] Are encryption operations (e.g., decrypts/failures) unlogged, hindering forensic analysis?
+
+#### 🧬 **15. Use of Static Initialization Vectors (IVs)**
+
+* [ ] Is the same IV reused across multiple encryption operations?
+
+#### 🧊 **16. Compression Side-Channel Exposure (e.g., CRIME/BREACH)**
+
+* [ ] Is HTTP compression enabled over encrypted channels without proper mitigations?
+
+#### ⚙️ **17. Improper Token Construction**
+
+* [ ] Are access tokens predictable or based on timestamp/username without randomness?
+
+#### 🔧 **18. Misconfigured or Open KMS (Key Management System)**
+
+* [ ] Can attacker enumerate or access keys due to overly permissive IAM roles?
+
+#### 🧱 **19. Legacy Systems with Weak Defaults**
+
+* [ ] Do older systems (e.g., Java 6 apps) use weak defaults like `SunJCE` with low entropy?
+
+#### 🧼 **20. Improper Use of XOR or Obfuscation Instead of Real Encryption**
+
+* [ ] Is XOR or Base64 being misused as a substitute for cryptographic protection?
+
+---
+
+#### 📉 **21. Decryption Oracle Present**
+
+* [ ] Can attackers interact with a decryption endpoint to reveal plaintext through error messages?
+
+#### 🧪 **22. Padding Oracle Vulnerabilities**
+
+* [ ] Is there observable behavior difference in padding errors during decryption (e.g., CBC-Padding Oracle)?
+
+#### 🧨 **23. Client-Side Encryption Fully Trusted**
+
+* [ ] Is sensitive encryption performed only on client-side with no server-side verification?
+
+#### 🪪 **24. Public/Private Key Disclosure**
+
+* [ ] Are public/private key pairs accessible in open-source repos or `.git` folders?
+
+#### 🧬 **25. Hybrid Encryption Misimplementation**
+
+* [ ] Are symmetric keys exposed due to improper RSA/AES hybrid usage?
+
+#### 🔄 **26. Lack of Forward Secrecy in Messaging Protocols**
+
+* [ ] Do messaging systems (e.g., chats) allow historical message decryption after key compromise?
+
+#### 🧯 **27. Improper Revocation of Compromised Keys**
+
+* [ ] Is there no revocation mechanism for leaked/rotated keys (e.g., not removing old JWT secrets)?
+
+#### 🕳️ **28. Use of Weak Key Derivation Functions**
+
+* [ ] Are insecure functions like `SHA1(password)` used instead of PBKDF2, bcrypt, or scrypt?
+
+#### 📊 **29. No Entropy Validation**
+
+* [ ] Are cryptographic operations based on weak randomness sources (e.g., predictable entropy pools)?
+
+#### 📂 **30. Backup Keys and Secrets Exposed**
+
+* [ ] Are old or rotated encryption keys still stored or backed up in unprotected formats?
+
+---
+
+
