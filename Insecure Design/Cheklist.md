@@ -111,3 +111,203 @@
 * **Threat Dragon / IriusRisk** – visualize and exploit threat models.
 
 ---
+
+
+### ✅ **Insecure Design Checklist (Offensive Security Focused)**
+
+📍\*\*(Part 2: Points 11–30)\*\*
+
+---
+
+### 🔄 **11. Business Logic Abuse Vectors**
+
+* [ ] Can you bypass or abuse business rules (e.g., get discounts, skip payments)?
+* [ ] Are workflow steps enforceable only by the client (not server)?
+* [ ] Is there no check on action dependencies (e.g., confirm email before purchase)?
+
+> 🛠️ Use Burp Repeater and logic manipulation to disrupt process flows.
+
+---
+
+### 🕳️ **12. Lack of Defense-in-Depth**
+
+* [ ] Are security controls **not layered** across front-end, API, and database?
+* [ ] Does the application rely **solely on client-side validation**?
+* [ ] Are APIs assuming authentication is already validated elsewhere?
+
+> 🛠 Bypass front-end validation and hit APIs directly to check for enforcement gaps.
+
+---
+
+### 🧱 **13. Missing Threat Modeling for Critical Flows**
+
+* [ ] Are **high-risk features** like password reset, payments, and user invite systems not threat modeled?
+* [ ] Are **business-critical endpoints** lacking abuse protection?
+
+> 🛠 Fuzz key flows like checkout, referrals, and token reset URLs.
+
+---
+
+### 🗺️ **14. No Isolation for Admin or Privileged Interfaces**
+
+* [ ] Are admin routes (`/admin`, `/staff`) **publicly accessible**?
+* [ ] Is there **no additional security layer** (IP whitelisting, MFA) for sensitive panels?
+* [ ] Are debug routes exposed in production?
+
+> 🛠 Test for low-privilege access to restricted functions or dashboards.
+
+---
+
+### ⚙️ **15. Misuse of HTTP Methods & REST Verbs**
+
+* [ ] Are insecure methods like `PUT`, `DELETE`, or `OPTIONS` allowed for all users?
+* [ ] Can state-changing operations be triggered via `GET` requests?
+* [ ] Is `PATCH` allowed without proper validation?
+
+> 🛠 Use tools like `curl`, `httpx`, or Burp to manipulate verbs and force unexpected behaviors.
+
+---
+
+### 🧬 **16. Improper Multi-Tenancy Design**
+
+* [ ] Can users access or manipulate data belonging to **other tenants or organizations**?
+* [ ] Are tenant IDs predictable or passed via insecure parameters?
+* [ ] Is authorization **only handled at the front-end**?
+
+> 🛠 Try IDOR-style attacks across user/tenant boundaries.
+
+---
+
+### 🧯 **17. Missing Abuse Prevention Design**
+
+* [ ] Are there **no limits** on registration, login, or API usage?
+* [ ] Are user actions (e.g., password reset, report abuse) **not rate-limited**?
+* [ ] Can you spam or DoS certain flows?
+
+> 🛠 Use `ffuf`, `intruder`, or custom scripts for rate and spam testing.
+
+---
+
+### 🔑 **18. Static, Guessable, or Reusable Tokens**
+
+* [ ] Are password reset tokens, email verification codes **guessable or reused**?
+* [ ] Are token lengths short or generated via predictable algorithms?
+* [ ] Is token rotation missing after first use?
+
+> 🛠 Attempt brute force or reuse expired links to test validity.
+
+---
+
+### 📉 **19. Weak State Transition Validation**
+
+* [ ] Can you jump from `unverified` to `verified` by changing status parameters?
+* [ ] Are users allowed to skip mandatory onboarding or payment steps?
+* [ ] Are `state` or `step` parameters enforced client-side?
+
+> 🛠 Intercept requests and skip steps to test state machine flaws.
+
+---
+
+### 🗃️ **20. Overtrust in File Metadata or MIME Types**
+
+* [ ] Is file validation **based only on extension or MIME header**?
+* [ ] Can users upload `.php`, `.jsp`, or `.exe` files with spoofed content-type?
+* [ ] Is there no deep file content inspection?
+
+> 🛠 Upload test payloads like polyglots, XSS in SVG, or Web Shell stagers.
+
+---
+
+### 🧩 **21. Confused Deputy Problems in Architecture**
+
+* [ ] Are services performing actions **on behalf of unauthenticated or lower-priv users**?
+* [ ] Is API access delegated without verifying caller authority?
+
+> 🛠 Trigger backend to make privileged API calls for you (SSRF, broken delegation).
+
+---
+
+### 📜 **22. Insecure Design of Notifications or Messaging Systems**
+
+* [ ] Can users **spoof notifications or system messages** to other users?
+* [ ] Is the notification logic **triggered client-side or misvalidated**?
+
+> 🛠 Inject messages, simulate admin actions, or spam inboxes to test.
+
+---
+
+### 🧼 **23. Missing Design for Input Canonicalization**
+
+* [ ] Are inputs not **normalized** before being processed (e.g., whitespace, encoding tricks)?
+* [ ] Can you bypass filters using **Unicode, full-width characters, or hex**?
+
+> 🛠 Use obfuscated payloads and encodings to slip past logic checks.
+
+---
+
+### 🔧 **24. Improper Feature Flag Implementation**
+
+* [ ] Are **in-development features** hidden client-side but active server-side?
+* [ ] Are feature flags **controlled by client parameters or cookies**?
+
+> 🛠 Try enabling premium/admin features by toggling front-end flags.
+
+---
+
+### 📍 **25. Lack of Architectural Redundancy or Fail-Safes**
+
+* [ ] Is there a **single point of failure** in critical authentication or payment flow?
+* [ ] Does the application fail **open** instead of securely?
+
+> 🛠 Induce errors and crash flows to see how gracefully (or insecurely) they recover.
+
+---
+
+### 🧠 **26. Insecure ML/AI Logic Design**
+
+* [ ] Are models vulnerable to **input poisoning**, **model inversion**, or **prompt injection**?
+* [ ] Are user inputs directly fed into decision-making algorithms without sanitation?
+
+> 🛠 Attempt prompt injection, adversarial inputs, or logic flipping.
+
+---
+
+### 🎯 **27. Misuse of Client-Controlled Parameters**
+
+* [ ] Are sensitive decisions based on client-controlled fields (e.g., `is_admin=true`)?
+* [ ] Are discount, pricing, or permission parameters trusted from frontend?
+
+> 🛠 Modify hidden fields or request payloads for privilege escalation.
+
+---
+
+### 📤 **28. Insecure Data Flow Between Microservices**
+
+* [ ] Are internal service calls **not authenticated or signed**?
+* [ ] Is input from one service passed to another **without validation**?
+* [ ] Is message queue traffic **unencrypted or unauthenticated**?
+
+> 🛠 Look for injection, tampering, or unauthorized access between services.
+
+---
+
+### 🧱 **29. Improper Handling of Legacy Endpoints**
+
+* [ ] Are old endpoints still active and vulnerable to known exploits?
+* [ ] Is version control absent, allowing fallback to `/v1` or `/beta` APIs?
+
+> 🛠 Bruteforce endpoint paths (`/api/v0`, `/legacy`, `/old-api`) to find overlooked surfaces.
+
+---
+
+### 🎛️ **30. Insecure User-Controlled Configuration or Customization**
+
+* [ ] Can users inject insecure configurations (e.g., HTML themes, plugin paths)?
+* [ ] Are customizable features stored without sanitation or validation?
+
+> 🛠 Try injecting paths, XSS, or template injection in user-defined settings.
+
+---
+
+
+
