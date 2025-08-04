@@ -148,3 +148,132 @@
 
 ---
 
+## ✅ **Broken Access Control Checklist (Offensive Security Focused) — Part 2 (13–30)**
+
+---
+
+### 🔁 **13. OAuth / OpenID Connect Misuse**
+
+* [ ] ✅ Can you reuse or manipulate `access_token` or `id_token` to access other users' data?
+* [ ] ✅ Is there a weak or missing audience (`aud`) validation in ID tokens?
+* [ ] ✅ Is the system accepting tokens issued for other clients (confused deputy attack)?
+
+---
+
+### 🧱 **14. Path Traversal in Role-Relevant Endpoints**
+
+* [ ] ✅ Try using `../../admin/config` or encoded versions (`..%2f`) to escalate access.
+* [ ] ✅ Bypass file or config access checks in misconfigured servers.
+
+---
+
+### 👥 **15. Privilege Confusion Between Tenants (Multitenancy Issues)**
+
+* [ ] ✅ Can one tenant access another tenant’s data by changing `tenant_id` or headers?
+* [ ] ✅ Test IDOR and role escalation in multitenant setups.
+
+---
+
+### 🔄 **16. Hidden Features or Role Overlap**
+
+* [ ] ✅ Test features not visible in the UI but accessible via direct API calls (e.g., `/billing/export`)
+* [ ] ✅ Abuse shared endpoints where authorization logic is reused incorrectly between user types.
+
+---
+
+### 🚫 **17. Frontend-Enforced Access Control**
+
+* [ ] ✅ If access control is only enforced by JavaScript logic or route guards, try bypassing by direct URL access.
+* [ ] ✅ Disable JavaScript and request protected pages.
+
+---
+
+### 🪪 **18. Role-Based Caching Issues**
+
+* [ ] ✅ Check if cached content is served without verifying current user permissions.
+* [ ] ✅ Abuse misconfigured CDNs or proxies serving stale pages across sessions.
+
+---
+
+### 🧠 **19. Lack of Context-Aware Authorization**
+
+* [ ] ✅ Try reusing valid tokens at the wrong time or wrong place (e.g., change email while unverified).
+* [ ] ✅ Abuse workflows like order approvals, KYC processes, or SSO sessions.
+
+---
+
+### 🔂 **20. Token Scoping Misconfiguration**
+
+* [ ] ✅ Can you access broader resources than intended using a limited-scope token?
+* [ ] ✅ Are tokens missing claim-based restrictions (`scope`, `sub`, `role`, etc.)?
+
+---
+
+### 🧵 **21. Vertical Access Control Failures in APIs**
+
+* [ ] ✅ Can a basic user call `/api/admin/metrics` or `/api/internal/logs`?
+* [ ] ✅ Replay an admin endpoint call with a downgraded token.
+
+---
+
+### 🔎 **22. Horizontal Access Control via Object Guessing**
+
+* [ ] ✅ Can you view or manipulate resources of other users via enumeration (e.g., `/profile/101`, `/profile/102`)?
+* [ ] ✅ Bruteforce user IDs in POST, PUT, or DELETE calls.
+
+---
+
+### 🧾 **23. Insecure Workflow Transitions**
+
+* [ ] ✅ Can you skip required steps in flows like onboarding, checkout, or KYC by directly calling the final endpoint?
+* [ ] ✅ Try accessing confirmation endpoints without session state.
+
+---
+
+### 💬 **24. Misused Headers for Access Control**
+
+* [ ] ✅ Modify or inject headers like `X-User-ID`, `X-Role`, or `X-Forwarded-For` to impersonate users.
+* [ ] ✅ Use internal headers that upstream systems rely on for identity.
+
+---
+
+### 🧱 **25. CSP / CORs-Based Bypass for Access**
+
+* [ ] ✅ Abuse misconfigured CORS (`Access-Control-Allow-Origin: *`) to hijack tokens or make authenticated requests via CSRF.
+
+---
+
+### 🎛️ **26. Broken Function-Level Authorization**
+
+* [ ] ✅ Try accessing endpoints (e.g., `/delete`, `/ban`, `/assign`) that check only for authentication but not role.
+
+---
+
+### 🔁 **27. User Impersonation via Open Redirect or Session Injection**
+
+* [ ] ✅ Exploit open redirects in login flows to trick the app into issuing a session for another user.
+* [ ] ✅ Manipulate login tokens or SAML assertions to impersonate.
+
+---
+
+### 📁 **28. Unauthorized Resource Injection**
+
+* [ ] ✅ Upload dangerous resources to shared spaces (e.g., uploading HTML to user content) to hijack sessions or admin panels.
+* [ ] ✅ Abuse file names/IDs to overwrite or take control of system resources.
+
+---
+
+### 📂 **29. Cross-Tenant Metadata Exposure**
+
+* [ ] ✅ Access tenant or organization-specific metadata using leaked identifiers or misconfigured endpoints (e.g., `/tenant-settings?orgId=5`).
+
+---
+
+### 📦 **30. Access Control via Client Trust Assumptions**
+
+* [ ] ✅ Does the server rely solely on the client to enforce logic like user limits, cart pricing, or invoice creation?
+* [ ] ✅ Modify client requests to manipulate server decisions (e.g., inject `userId` in POST).
+
+---
+
+
